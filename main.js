@@ -182,24 +182,26 @@ let MSGame = (function(){
 })();
 //////////////////////////////////////////////////////////////
 let flagged = false;
-function mine(game, card) {
-    let [x_coordinate,y_coordinate] = splitString(card);
+let timer;
+const tempo = 10; 
+function mine(game, tile_location) {
+    let [x_coordinate,y_coordinate] = splitString(tile_location);
     x_coordinate = Number(x_coordinate)
     y_coordinate = Number(y_coordinate)
     game.uncover(x_coordinate,y_coordinate);
-    renderBoard(game);
+    generate_Board(game);
     flagged = false;
 }
 
-function flag(game, card) {
-    let [x_coordinate,y_coordinate] = splitString(card);
+function flag(game, tile_location) {
+    let [x_coordinate,y_coordinate] = splitString(tile_location);
     x_coordinate = Number(x_coordinate)
     y_coordinate = Number(y_coordinate)
     game.mark(x_coordinate,y_coordinate);
-    renderBoard(game);
+    generate_Board(game);
 }
-function splitString(card){
-    var split_string = card.dataset.coordinate.split("x");
+function splitString(tile_location){
+    var split_string = tile_location.dataset.coordinate.split("x");
     let [x_coordinate,y_coordinate] = split_string;
     return [x_coordinate,y_coordinate];
 }
@@ -213,109 +215,107 @@ function setTimer(game){
     document.querySelector(".gameTimer").innerHTML = "Timer: " + time
 }
 
-var timer;
 
-//Time of the long press
-const tempo = 10; //Time 1000ms = 1s
-
-function mouseDown(game, card) {
+function mouseDown(game, tile_location) {
     timer = setTimeout(function(){
-        flag(game, card);
+        flag(game, tile_location);
     }, tempo);
 };
 
-function mouseUp(game, card) {
+function mouseUp(game, tile_location) {
     clearTimeout(timer);
     if (!flagged)
-        mine(game, card);
+        mine(game, tile_location);
     flagged = false;
 };
 
 
-function renderBoard(game) {
-    const grid = document.querySelector(".grid");
+function generate_Board(game) {
+    
+    const grid = document.querySelector(".base");
     grid.innerHTML = "";
-    const board = game.getRendering();
+    const game_board = game.getRendering();
+    //What does this mean?
     document.querySelector(".flagCounter").innerHTML = "Flags: " + (game.getStatus().nmines - game.getStatus().nmarked);
    //disable right click menu
    document.querySelectorAll(".gridwrapper").forEach(element => element.addEventListener("contextmenu", n => {
     n.preventDefault();
   }));
     
-    //add the easy and normal grid things
-    let jqueryGrid = $(".grid");
-    let size = board.length;
+    //create a switch statement to chose a difficulty.
+    let set_board = $(".base");
+    let size = game_board.length;
     switch(size) {
         case 10:
-            jqueryGrid.removeClass("grid-normal");
-            jqueryGrid.addClass("grid-easy");
+            set_board.removeClass("Expert");
+            set_board.addClass("Beginner");
             break;
         case 20:
-            jqueryGrid.removeClass("grid-easy")
-            jqueryGrid.addClass("grid-normal");
+            set_board.removeClass("Beginner")
+            set_board.addClass("Expert");
             break;
             
     }
     //initialize variables
     let row_counter = 0;
     let column_counter = 0;
-    for(row_counter = 0 ; row_counter < board.length ; row_counter =row_counter + 1) {
-        for(column_counter = 0; column_counter < board[row_counter].length; column_counter = column_counter + 1){
-            let cell = board[row_counter][column_counter];
-            
-            const card = document.createElement("div");
-            card.location = `${row_counter}&#x2715;${column_counter}`;
-            card.className = "card";
-            card.dataset.coordinate = row_counter+"x"+column_counter;
-            card.innerHTML = "";
+    for(row_counter = 0 ; row_counter < game_board.length ; row_counter =row_counter + 1) {
+        for(column_counter = 0; column_counter < game_board[row_counter].length; column_counter = column_counter + 1){
+            let field_location = game_board[row_counter][column_counter];
+            let image = document.createElement('img');
+            const tile_location = document.createElement('div');
+            tile_location.location = `${row_counter}&#x2715;${column_counter}`;
+            tile_location.className = "tile_location";
+            tile_location.dataset.coordinate = row_counter+"x"+column_counter;
+            tile_location.innerHTML = "";
         
-            let image = document.createElement("img");
-            if (cell == "H"){
+            
+            if (field_location == "H"){
                 image.src = "./assets/field/building1.jpg";
             }
-            else if(cell == "F"){
+            else if(field_location == "F"){
                 image.src = "./assets/field/flag.jpg";
             }
-            else if (cell == "M"){
+            else if (field_location == "M"){
                 image.src = "./assets/field/bomb.jpg";
-            }else if(cell == '1'){
+            }else if(field_location == '1'){
                 image.src = "./assets/numbers/one.png";
-            }else if(cell == '2'){
+            }else if(field_location == '2'){
                 image.src = "./assets/numbers/two.jpg";
-            }else if(cell == '3'){
+            }else if(field_location == '3'){
                 image.src = "./assets/numbers/three.jpg";
-            }else if(cell == '4'){
+            }else if(field_location == '4'){
                 image.src = "./assets/numbers/four.jpg";
-            }else if(cell == '5'){
+            }else if(field_location == '5'){
                 image.src = "./assets/numbers/five.png";
-            }else if(cell == '6'){
+            }else if(field_location == '6'){
                 image.src = "./assets/numbers/images.jpg";
-            }else if(cell == '7'){
+            }else if(field_location == '7'){
                 image.src = "./assets/numbers/seven.jpg";
-            }else if(cell == '8'){
+            }else if(field_location == '8'){
                 image.src = "./assets/numbers/eight.jpg";
-            }else if(cell == '9'){
+            }else if(field_location == '9'){
                 image.src = "./assets/numbers/nine.jpg";
-            }else if(cell == '0'){
+            }else if(field_location == '0'){
                 image.src = "./assets/numbers/zero.jpg";
             }
                 
             image.className = "cardImage";
-            card.appendChild(image);
-            // card.className = "card";
-            // card.setAttribute("data-cardInd", i);
+            tile_location.appendChild(image);
+            // tile_location.className = "tile_location";
+            // tile_location.setAttribute("data-cardInd", i);
             if(!game.getStatus().done){
                 
-                    card.onmouseup = event => {
+                    tile_location.onmouseup = event => {
                         if (event.button === 0) {
-                            mine(game, card);
+                            mine(game, tile_location);
                         } else {
-                            flag(game, card);
+                            flag(game, tile_location);
                         }
                     };
                 
             }
-            grid.appendChild(card);
+            grid.appendChild(tile_location);
         }
     }
     //check if game is done
@@ -331,7 +331,7 @@ function createBoardFromButton(button,game){
     let [row,col,mines] = button.getAttribute("data-size").split("x");
     row = Number(row); col = Number(col); mines = Number(mines);
     game.init(row,col,mines)
-    renderBoard(game)
+    generate_Board(game)
     //remove win overlay if exists
     
     //reset timer
@@ -348,7 +348,7 @@ function main(){
       createBoardFromButton(button,game)
         })
     });
-    renderBoard(game);
+    generate_Board(game);
     window.setInterval(x => setTimer(game),1000);
 
 }

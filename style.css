@@ -29,13 +29,13 @@ body {
     clear: both;
 }
 
-.grid-easy {
+.Beginner {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     width: calc(70vh);
 }
 
-.grid-normal {
+.Expert {
     display: grid;
     grid-template-columns: repeat(20, 1fr);
     width: calc(90vh);
@@ -83,7 +83,7 @@ body {
     background: black;
 }
 
-.grid > div::before {
+.base > div::before {
     display: block;
 }
 

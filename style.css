@@ -1,13 +1,13 @@
 * {
     font-family: Impact;
-    font-size: 1.3rem;
+    font-size: 20px;
 }
 
 body {
     background-image: url("warzone.jpg");
     background-color: black;
 }
-.flagCounter{
+.flags_placed{
     color: white;
 }
 .stopwatch{
@@ -34,13 +34,17 @@ body {
 
 .Beginner {
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(10, .75fr);
     width: calc(70vh);
 }
-
+.Intermediate {
+    display: grid;
+    grid-template-columns: repeat(15, .75fr);
+    width: calc(90vh);
+}
 .Expert {
     display: grid;
-    grid-template-columns: repeat(20, 1fr);
+    grid-template-columns: repeat(20, .75fr);
     width: calc(90vh);
 }
 
@@ -63,16 +67,16 @@ body {
 .difficultyMenu {
     display: flex;
     justify-content: center;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.5%;
     flex-wrap: wrap;
     align-items: center;
 }
 
 .difficultyMenu * {
-    padding: 5px 0.5em;
+    padding: 10px;
     border: 0px solid gray;
     background-color: black;
-    margin: 5px;
+    margin: 0.5%;
     border-radius: 0.5em;
     font-size: 1em;
     color: white;

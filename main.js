@@ -27,7 +27,7 @@ let MSGame = (function(){
 
     class _MSGame {
         constructor() {
-            this.init(10, 10, 10); // easy by default
+            this.init(10, 10, 15); // easy by default
         }
 
         validCoord(row, col) {
@@ -208,14 +208,33 @@ function splitString(tile_location){
 /*
 TODO -> Redo timer function
 */
-function setTimer(game){
-    if(game.getStatus().nuncovered !== 0 && !game.getStatus().done){
-        time++
-    }
-    document.querySelector(".gameTimer").innerHTML = "Timer: " + time
+function stopwatch(game){
+    let status = game.getStatus();
+    var start_explosion = status.nuncovered;
+    var game_over = status.done;
+    if(start_explosion !== 0){
+        if (game_over == false){
+            game_time = game_time + 1;
+        }
+    } 
+    document.querySelector(".stopwatch").innerHTML = "Time in Game: " + game_time
 }
 
+function countdown(game){
+    let status = game.getStatus();
+    var start_explosion = status.nuncovered;
+    var game_over = status.done;
+    if(start_explosion !== 0){
+        if (game_over == false){
+            game_timer = game_timer -1;
+        }
+    } 
+    document.querySelector(".countdown").innerHTML = "Time Till Detonation: " + game_timer
+}
 
+/*
+Finish doing the mouse up and mouse down function.
+*/
 function mouseDown(game, tile_location) {
     timer = setTimeout(function(){
         flag(game, tile_location);
@@ -231,14 +250,17 @@ function mouseUp(game, tile_location) {
 
 
 function generate_Board(game) {
-    
-    const grid = document.querySelector(".base");
-    grid.innerHTML = "";
+    let game_status = game.getStatus();
+    let mines_placed = game_status.nmines;
+    let mines_marked = game_status.nmarked
+    const base_layout = document.querySelector(".base");
+    base_layout.innerHTML = "";
     const game_board = game.getRendering();
+    let flag_count = (mines_placed - mines_marked);
     //What does this mean?
-    document.querySelector(".flagCounter").innerHTML = "Flags: " + (game.getStatus().nmines - game.getStatus().nmarked);
+    document.querySelector(".flagCounter").innerHTML = "Flags Remaining: " + flag_count;
    //disable right click menu
-   document.querySelectorAll(".gridwrapper").forEach(element => element.addEventListener("contextmenu", n => {
+   document.querySelectorAll(".playing_area").forEach(element => element.addEventListener("contextmenu", n => {
     n.preventDefault();
   }));
     
@@ -259,7 +281,7 @@ function generate_Board(game) {
     //initialize variables
     let row_counter = 0;
     let column_counter = 0;
-    for(row_counter = 0 ; row_counter < game_board.length ; row_counter =row_counter + 1) {
+    for(row_counter = 0 ; row_counter < game_board.length ; row_counter = row_counter + 1) {
         for(column_counter = 0; column_counter < game_board[row_counter].length; column_counter = column_counter + 1){
             let field_location = game_board[row_counter][column_counter];
             let image = document.createElement('img');
@@ -270,40 +292,51 @@ function generate_Board(game) {
             tile_location.innerHTML = "";
         
             
-            if (field_location == "H"){
+            if (field_location == "H")
+            {
                 image.src = "./assets/field/building1.jpg";
             }
-            else if(field_location == "F"){
+            else if(field_location == "F")
+            {
                 image.src = "./assets/field/flag.jpg";
             }
-            else if (field_location == "M"){
+            else if (field_location == "M")
+            {
                 image.src = "./assets/field/bomb.jpg";
-            }else if(field_location == '1'){
+            }else if(field_location == '1')
+            {
                 image.src = "./assets/numbers/one.png";
-            }else if(field_location == '2'){
+            }else if(field_location == '2')
+            {
                 image.src = "./assets/numbers/two.jpg";
-            }else if(field_location == '3'){
+            }else if(field_location == '3')
+            {
                 image.src = "./assets/numbers/three.jpg";
-            }else if(field_location == '4'){
+            }else if(field_location == '4')
+            {
                 image.src = "./assets/numbers/four.jpg";
-            }else if(field_location == '5'){
+            }else if(field_location == '5')
+            {
                 image.src = "./assets/numbers/five.png";
-            }else if(field_location == '6'){
+            }else if(field_location == '6')
+            {
                 image.src = "./assets/numbers/images.jpg";
-            }else if(field_location == '7'){
+            }else if(field_location == '7')
+            {
                 image.src = "./assets/numbers/seven.jpg";
-            }else if(field_location == '8'){
+            }else if(field_location == '8')
+            {
                 image.src = "./assets/numbers/eight.jpg";
-            }else if(field_location == '9'){
+            }else if(field_location == '9')
+            {
                 image.src = "./assets/numbers/nine.jpg";
-            }else if(field_location == '0'){
+            }else if(field_location == '0')
+            {
                 image.src = "./assets/numbers/zero.jpg";
             }
                 
-            image.className = "cardImage";
+            image.className = "base_image";
             tile_location.appendChild(image);
-            // tile_location.className = "tile_location";
-            // tile_location.setAttribute("data-cardInd", i);
             if(!game.getStatus().done){
                 
                     tile_location.onmouseup = event => {
@@ -315,7 +348,7 @@ function generate_Board(game) {
                     };
                 
             }
-            grid.appendChild(tile_location);
+            base_layout.appendChild(tile_location);
         }
     }
     //check if game is done
@@ -328,31 +361,43 @@ function generate_Board(game) {
 }
 
 function createBoardFromButton(button,game){
-    let [row,col,mines] = button.getAttribute("data-size").split("x");
-    row = Number(row); col = Number(col); mines = Number(mines);
-    game.init(row,col,mines)
+    let [x_coordinate,y_coordinate,mine_count,flag_count] = split_incoming_data(button);
+    x_coordinate = Number(x_coordinate); 
+    y_coordinate = Number(y_coordinate);
+    mine_count = Number(mine_count);
+    game.init(x_coordinate,y_coordinate,mine_count)
     generate_Board(game)
-    //remove win overlay if exists
+    
     
     //reset timer
-    time = 0;
+    game_time = 0;
+    game_timer = 1000;
   }
+
+function split_incoming_data(button)
+{
+    var split_string = button.getAttribute("data-size").split("x");
+    var [x_coordinate,y_coordinate,mine_count,flag_count] = split_string;
+    return [x_coordinate,y_coordinate,mine_count,flag_count];
+}
 
 
 function main(){
 
     
     // register callbacks for buttons
-    document.querySelectorAll(".difficultyButton").forEach((button) =>{
+    document.querySelectorAll(".difficulty_select").forEach((button) =>{
     button.addEventListener("click",function(){
       createBoardFromButton(button,game)
         })
     });
     generate_Board(game);
-    window.setInterval(x => setTimer(game),1000);
+    window.setInterval(x => stopwatch(game),1000);
+    window.setInterval(x => countdown(game),1000);
 
 }
-let time = 0;
+let game_timer = 1000;
+let game_time = 0;
 let hadStarted = false;
 let game = new MSGame();
 window.addEventListener('load', main);

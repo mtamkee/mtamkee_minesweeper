@@ -10,7 +10,10 @@ body {
 .flagCounter{
     color: white;
 }
-.gameTimer{
+.stopwatch{
+    color: red;
+}
+.countdown{
     color: red;
 }
 .column {
@@ -41,7 +44,7 @@ body {
     width: calc(90vh);
 }
 
-.gridwrapper {
+.playing_area {
     display: flex;
     justify-content: center;
     align-items: stretch;
@@ -77,7 +80,7 @@ body {
 }
 
 
-.difficultyButton:hover {
+.difficulty_select:hover {
     cursor: pointer;
     color: red;
     background: black;
@@ -87,7 +90,7 @@ body {
     display: block;
 }
 
-.cardImage {
+.base_image {
     width: 100%;
     height: 100%;
 }

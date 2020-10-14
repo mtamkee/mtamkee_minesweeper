@@ -271,33 +271,33 @@ function renderBoard(game) {
         
             let image = document.createElement("img");
             if (cell == "H"){
-                image.src = "building1.jpg";
+                image.src = "./assets/field/building1.jpg";
             }
             else if(cell == "F"){
-                image.src = "flag.jpg";
+                image.src = "./assets/field/flag.jpg";
             }
             else if (cell == "M"){
-                image.src = "bomb.jpg";
+                image.src = "./assets/field/bomb.jpg";
             }else if(cell == '1'){
-                image.src = "./numbers/one.png";
+                image.src = "./assets/numbers/one.png";
             }else if(cell == '2'){
-                image.src = "./numbers/two.jpg";
+                image.src = "./assets/numbers/two.jpg";
             }else if(cell == '3'){
-                image.src = "./numbers/three.jpg";
+                image.src = "./assets/numbers/three.jpg";
             }else if(cell == '4'){
-                image.src = "./numbers/four.jpg";
+                image.src = "./assets/numbers/four.jpg";
             }else if(cell == '5'){
-                image.src = "./numbers/five.png";
+                image.src = "./assets/numbers/five.png";
             }else if(cell == '6'){
-                image.src = "./numbers/images.jpg";
+                image.src = "./assets/numbers/images.jpg";
             }else if(cell == '7'){
-                image.src = "./numbers/seven.jpg";
+                image.src = "./assets/numbers/seven.jpg";
             }else if(cell == '8'){
-                image.src = "./numbers/eight.jpg";
+                image.src = "./assets/numbers/eight.jpg";
             }else if(cell == '9'){
-                image.src = "./numbers/nine.jpg";
+                image.src = "./assets/numbers/nine.jpg";
             }else if(cell == '0'){
-                image.src = "./numbers/zero.jpg";
+                image.src = "./assets/numbers/zero.jpg";
             }
                 
             image.className = "cardImage";

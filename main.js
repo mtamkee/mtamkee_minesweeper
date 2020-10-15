@@ -303,51 +303,63 @@ function generate_Board(mine_sweeper) {
             else if (field_location == "M")
             {
                 image.src = "./assets/field/bomb.jpg";
-            }else if(field_location == '1')
+            }
+            else if(field_location == '1')
             {
                 image.src = "./assets/numbers/one.png";
-            }else if(field_location == '2')
+            }
+            else if(field_location == '2')
             {
                 image.src = "./assets/numbers/two.jpg";
-            }else if(field_location == '3')
+            }
+            else if(field_location == '3')
             {
                 image.src = "./assets/numbers/three.jpg";
-            }else if(field_location == '4')
+            }
+            else if(field_location == '4')
             {
                 image.src = "./assets/numbers/four.jpg";
-            }else if(field_location == '5')
+            }
+            else if(field_location == '5')
             {
                 image.src = "./assets/numbers/five.png";
-            }else if(field_location == '6')
+            }
+            else if(field_location == '6')
             {
                 image.src = "./assets/numbers/images.jpg";
-            }else if(field_location == '7')
+            }
+            else if(field_location == '7')
             {
                 image.src = "./assets/numbers/seven.jpg";
-            }else if(field_location == '8')
+            }
+            else if(field_location == '8')
             {
                 image.src = "./assets/numbers/eight.jpg";
-            }else if(field_location == '9')
+            }
+            else if(field_location == '9')
             {
                 image.src = "./assets/numbers/nine.jpg";
-            }else if(field_location == '0')
+            }
+            else if(field_location == '0')
             {
                 image.src = "./assets/numbers/zero.jpg";
             }
                 
             
 
-            //do this junk
+            
             var get_status = mine_sweeper.getStatus().done;
             if(!get_status){
-                    tile_location.onmouseup = event => {
+                    tile_location.onmousedown = event => {
                        var game_event = event.button;
-                       switch(game_event){
-                            case 0:
-                                mine(mine_sweeper,tile_location);
-                                break;
-                            default:
-                                flag(mine_sweeper,tile_location);
+                       if(game_event == 0)
+                       {
+                           //mine square
+                           mine(mine_sweeper,tile_location);
+                       }
+                       else{
+                           //flag lsquare
+                           flag(mine_sweeper,tile_location);
                        }
                     };
                 
@@ -389,6 +401,7 @@ function createBoardFromButton(button,mine_sweeper){
 
   /*
   create cases to get the number of mines.
+  from html, takes the datasize and parses it
   */
 function split_incoming_data(button)
 {

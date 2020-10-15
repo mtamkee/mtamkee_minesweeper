@@ -375,7 +375,7 @@ function generate_Board(mine_sweeper) {
         //if the mine_sweeper is won or lost
         //loss
         
-        document.querySelector("#overlay").classList.add("active");
+        
     }
 }
 
@@ -410,8 +410,8 @@ function split_incoming_data(button)
     return [x_coordinate,y_coordinate,mine_count,flag_count];
 }
 
-//change main 
-function main(){
+
+function start_game(){
 
     
     // register callbacks for buttons
@@ -426,4 +426,4 @@ function main(){
 
 }
 let mine_sweeper = new MSGame(); // call the game engine to be passed 
-window.addEventListener('load', main);
+window.addEventListener('load', start_game);

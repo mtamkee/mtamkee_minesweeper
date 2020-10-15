@@ -184,7 +184,7 @@ let MSGame = (function(){
 let flagged = false;
 
 //initialize timers 
-let timer;
+
 let game_timer = 1000;
 let game_time = 0;
 
@@ -209,9 +209,7 @@ function splitString(tile_location){
     let [x_coordinate,y_coordinate] = split_string;
     return [x_coordinate,y_coordinate];
 }
-/*
-TODO -> Redo timer function
-*/
+
 function stopwatch(mine_sweeper){
     let status = mine_sweeper.getStatus();
     var start_explosion = status.nuncovered;
@@ -236,22 +234,6 @@ function countdown(mine_sweeper){
     document.querySelector(".countdown").innerHTML = "Time Till Detonation: " + game_timer
 }
 
-/*
-Finish doing the mouse up and mouse down function.
-*/
-function mouseDown(mine_sweeper, tile_location) {
-    timer = setTimeout(function(){
-        flag(mine_sweeper, tile_location);
-    }, 1000);
-};
-
-function mouseUp(mine_sweeper, tile_location) {
-    clearTimeout(timer);
-    if (!flagged)
-        mine(mine_sweeper, tile_location);
-    flagged = false;
-};
-
 
 function generate_Board(mine_sweeper) {
     let game_status = mine_sweeper.getStatus();
@@ -261,8 +243,10 @@ function generate_Board(mine_sweeper) {
     base_layout.innerHTML = "";
     const game_board = mine_sweeper.getRendering();
     let flag_count = (mines_placed - mines_marked);
+    let flags_placed = mines_marked
     //What does this mean?
-    document.querySelector(".flags_placed").innerHTML = "Flags Remaining: " + flag_count;
+    document.querySelector(".flags_remaining").innerHTML = "Flags Remaining: " + flag_count;
+    document.querySelector(".flags_placed").innerHTML = "Flags Placed: " + flags_placed;
    //disable right click menu
    document.querySelectorAll(".playing_area").forEach(element => element.addEventListener("contextmenu", n => {
     n.preventDefault();
@@ -428,7 +412,5 @@ function main(){
     window.setInterval(x => countdown(mine_sweeper),1000);
 
 }
-
-let hadStarted = false;
-let mine_sweeper = new MSGame();
+let mine_sweeper = new MSGame(); // call the game engine to be passed 
 window.addEventListener('load', main);

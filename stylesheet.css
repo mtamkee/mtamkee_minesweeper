@@ -90,7 +90,6 @@ body {
 
 }
 
-
 .difficulty_select:hover {
     cursor: pointer;
     color: red;
@@ -98,7 +97,9 @@ body {
 }
 
 .base > div::before {
-    display: block;
+    content: "";
+  display: block;
+
 }
 
 .base_image {

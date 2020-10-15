@@ -188,6 +188,40 @@ let flagged = false;
 let game_timer = 1000;
 let game_time = 0;
 
+
+function end_game()
+{
+    reset_clock();
+    document.querySelector("#overlay").classList.add("active");
+}
+function winner()
+{
+    document.querySelector("#overlay").innerHTML = "You won"
+}
+function loser()
+{
+    document.querySelector("#overlay").innerHTML = "You died"
+}
+
+function reset_game()
+{
+    document.querySelector("#overlay").classList.remove("active");
+}
+
+function finish_game(){
+    var get_status = mine_sweeper.getStatus().done;
+    var is_loser = mine_sweeper.getStatus().exploded
+    if(get_status == true){
+        //if the mine_sweeper is won or lost
+        if(is_loser == false){
+            winner();
+        }
+        else{
+            loser();
+        }
+        end_game();
+    }
+}
 function mine(mine_sweeper, tile_location) {
     let [x_coordinate,y_coordinate] = splitString(tile_location);
     x_coordinate = Number(x_coordinate)
@@ -344,9 +378,6 @@ function generate_Board(mine_sweeper) {
             {
                 image.src = "./assets/numbers/zero.jpg";
             }
-                
-            
-
             
             var get_status = mine_sweeper.getStatus().done;
             if(!get_status){
@@ -370,14 +401,9 @@ function generate_Board(mine_sweeper) {
         }
     }
     //check if mine_sweeper is done
-    var get_status = mine_sweeper.getStatus().done;
-    if(get_status = false){
-        //if the mine_sweeper is won or lost
-        //loss
-        
-        
-    }
+    finish_game();
 }
+
 
 function reset_clock(){
     game_timer = 1000; // count down
@@ -392,6 +418,7 @@ function createBoardFromButton(button,mine_sweeper){
     mine_count = Number(mine_count);
     mine_sweeper.init(x_coordinate,y_coordinate,mine_count)
     generate_Board(mine_sweeper)
+    reset_game();
     
     
     //reset clock
@@ -425,5 +452,6 @@ function start_game(){
     window.setInterval(x => countdown(mine_sweeper),1000);
 
 }
+
 let mine_sweeper = new MSGame(); // call the game engine to be passed 
 window.addEventListener('load', start_game);

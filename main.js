@@ -283,7 +283,7 @@ function generate_Board(mine_sweeper) {
     const game_board = mine_sweeper.getRendering();
     let flag_count = (mines_placed - mines_marked);
     let flags_placed = mines_marked
-    //What does this mean?
+
     document.querySelector(".flags_remaining").innerHTML = "Flags Remaining: " + flag_count;
     document.querySelector(".flags_placed").innerHTML = "Flags Placed: " + flags_placed;
    //disable right click menu

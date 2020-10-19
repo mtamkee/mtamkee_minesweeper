@@ -128,7 +128,7 @@ body {
     padding: 1em;
     padding-left: 4em;
     padding-right: 4em;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: red;
     border-radius: 5px;
     display: flex;
     justify-content: right;

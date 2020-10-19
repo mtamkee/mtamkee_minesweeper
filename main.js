@@ -222,6 +222,8 @@ function finish_game(){
         end_game();
     }
 }
+
+
 function mine(mine_sweeper, tile_location) {
     let [x_coordinate,y_coordinate] = splitString(tile_location);
     x_coordinate = Number(x_coordinate)
@@ -229,6 +231,8 @@ function mine(mine_sweeper, tile_location) {
     mine_sweeper.uncover(x_coordinate,y_coordinate);
     generate_Board(mine_sweeper);
     flagged = false;
+    
+
 }
 
 function flag(mine_sweeper, tile_location) {
@@ -237,6 +241,7 @@ function flag(mine_sweeper, tile_location) {
     y_coordinate = Number(y_coordinate)
     mine_sweeper.mark(x_coordinate,y_coordinate);
     generate_Board(mine_sweeper);
+    
 }
 function splitString(tile_location){
     var split_string = tile_location.dataset.coordinate.split(",");
@@ -387,12 +392,14 @@ function generate_Board(mine_sweeper) {
                        {
                            //mine square
                            mine(mine_sweeper,tile_location);
+                           
                        }
                        else{
-                           //flag lsquare
+                           //flag square
                            flag(mine_sweeper,tile_location);
                        }
                     };
+                    
                 
             }
             image.className = "base_image";

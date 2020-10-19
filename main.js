@@ -258,7 +258,7 @@ function stopwatch(mine_sweeper){
             game_time = game_time + 1;
         }
     } 
-    document.querySelector(".stopwatch").innerHTML = "Time in mine_sweeper: " + game_time
+    document.querySelector(".stopwatch").innerHTML = "Time in warzone: " + game_time
 }
 
 function countdown(mine_sweeper){

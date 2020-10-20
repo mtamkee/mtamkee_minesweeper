@@ -214,14 +214,14 @@ function finish_game()
     activate_overlay(get_status,is_loser);
 }
 
-function handle_click(mine_sweeper, tile_location)
+function handle_tap(mine_sweeper, tile_location)
 {
     let click_time = 0;
     let drop_flag = false;
     tile_location.ontouchstart = () => {
         click_time = setTimeout(function(){
             flag(mine_sweeper,tile_location);
-        }, 500);
+        }, 250);
         console.log("mobile touch initiated");
     };
     tile_location.ontouchend = () => {
@@ -348,14 +348,84 @@ function timedRefresh(timeoutPeriod)
 	setTimeout("location.reload(true);",timeoutPeriod);
 }
 check_device();
+
+function get_nmines(game_status){
+    var x = game_status.nmines;
+    return x;
+}
+
+function get_nmarked(game_status){
+    var x = game_status.nmarked;
+    return x;
+}
+
+function get_rendering(mine_sweeper){
+    var x = mine_sweeper.getRendering();
+    return x;
+}
+
+function tile_generator(field_location,tile){
+    if (field_location == "H")
+            {
+                tile.src = "./assets/field/building.jpg";
+            }
+            else if(field_location == "F")
+            {
+                tile.src = "./assets/field/flag.jpg";
+            }
+            else if (field_location == "M")
+            {
+                tile.src = "./assets/field/bomb.jpg";
+            }
+            else if(field_location == '1')
+            {
+                tile.src = "./assets/numbers/one.jpg";
+            }
+            else if(field_location == '2')
+            {
+                tile.src = "./assets/numbers/two.jpg";
+            }
+            else if(field_location == '3')
+            {
+                tile.src = "./assets/numbers/three.jpg";
+            }
+            else if(field_location == '4')
+            {
+                tile.src = "./assets/numbers/four.jpg";
+            }
+            else if(field_location == '5')
+            {
+                tile.src = "./assets/numbers/five.png";
+            }
+            else if(field_location == '6')
+            {
+                tile.src = "./assets/numbers/images.jpg";
+            }
+            else if(field_location == '7')
+            {
+                tile.src = "./assets/numbers/seven.jpg";
+            }
+            else if(field_location == '8')
+            {
+                tile.src = "./assets/numbers/eight.jpg";
+            }
+            else if(field_location == '9')
+            {
+                tile.src = "./assets/numbers/nine.jpg";
+            }
+            else if(field_location == '0')
+            {
+                tile.src = "./assets/numbers/zero1.jpg";
+            }
+}
 function generate_Board(mine_sweeper)
 {
-    let game_status = mine_sweeper.getStatus();
-    let mines_placed = game_status.nmines;
-    let mines_marked = game_status.nmarked
     const base_layout = document.querySelector(".base");
+    let game_status = mine_sweeper.getStatus();
+    let mines_placed = get_nmines(game_status);
+    let mines_marked = get_nmarked(game_status);
     base_layout.innerHTML = "";
-    const game_board = mine_sweeper.getRendering();
+    const game_board = get_rendering(mine_sweeper);
     let flag_count = (mines_placed - mines_marked);
     let flags_placed = mines_marked
     check_device();
@@ -401,68 +471,15 @@ function generate_Board(mine_sweeper)
         for(column_counter = 0; column_counter < rows_in_board; column_counter = column_counter + 1)
         {
             let field_location = game_board[row_counter][column_counter];
-            let image = document.createElement('img');
+            let tile = document.createElement('img');
             let tile_location = document.createElement('div');
             tile_location.location = `${row_counter}&#x2715;${column_counter}`;
             tile_location.className = "tile_location";
             tile_location.dataset.coordinate = row_counter+","+column_counter;
             tile_location.innerHTML = "";
-        
-            
-            if (field_location == "H")
-            {
-                image.src = "./assets/field/building.jpg";
-            }
-            else if(field_location == "F")
-            {
-                image.src = "./assets/field/flag.jpg";
-            }
-            else if (field_location == "M")
-            {
-                image.src = "./assets/field/bomb.jpg";
-            }
-            else if(field_location == '1')
-            {
-                image.src = "./assets/numbers/one.jpg";
-            }
-            else if(field_location == '2')
-            {
-                image.src = "./assets/numbers/two.jpg";
-            }
-            else if(field_location == '3')
-            {
-                image.src = "./assets/numbers/three.jpg";
-            }
-            else if(field_location == '4')
-            {
-                image.src = "./assets/numbers/four.jpg";
-            }
-            else if(field_location == '5')
-            {
-                image.src = "./assets/numbers/five.png";
-            }
-            else if(field_location == '6')
-            {
-                image.src = "./assets/numbers/images.jpg";
-            }
-            else if(field_location == '7')
-            {
-                image.src = "./assets/numbers/seven.jpg";
-            }
-            else if(field_location == '8')
-            {
-                image.src = "./assets/numbers/eight.jpg";
-            }
-            else if(field_location == '9')
-            {
-                image.src = "./assets/numbers/nine.jpg";
-            }
-            else if(field_location == '0')
-            {
-                image.src = "./assets/numbers/zero1.jpg";
-            }
-            image.className = "base_image";
-            tile_location.appendChild(image);
+            tile_generator(field_location,tile);
+            tile.className = "base_image";
+            tile_location.appendChild(tile);
             var get_status = mine_sweeper.getStatus().done;
             if(get_status == false){
                 if(device == false){
@@ -485,14 +502,14 @@ function generate_Board(mine_sweeper)
                 else if (device == true)
                 {
                     console.log("tap to mine or hold to flag")
-                    handle_click(mine_sweeper,tile_location);
+                    handle_tap(mine_sweeper,tile_location);
                 }
                     
                     
                 
             }
-            image.className = "base_image";
-            tile_location.appendChild(image);
+            tile.className = "base_image";
+            tile_location.appendChild(tile);
             base_layout.appendChild(tile_location);
         }
     }

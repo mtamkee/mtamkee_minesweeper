@@ -543,6 +543,7 @@ function split_incoming_data(button)
 function set_timings(mine_sweeper){
     window.setInterval(x => stopwatch(mine_sweeper),1000);
     window.setInterval(x => countdown(mine_sweeper),1000);
+    console.log("timers are set")
 }
 
 function start_game()
@@ -557,6 +558,7 @@ function start_game()
     });
     generate_Board(mine_sweeper);
     set_timings(mine_sweeper);
+    console.log("game has successfully started.")
 
 }
 

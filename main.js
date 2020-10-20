@@ -196,11 +196,11 @@ function end_game()
 }
 function winner()
 {
-    document.querySelector("#overlay").innerHTML = "You won"
+    document.querySelector("#overlay").innerHTML = "You won with: " + game_timer + " seconds left"
 }
 function loser()
 {
-    document.querySelector("#overlay").innerHTML = "You died"
+    document.querySelector("#overlay").innerHTML = "You died with: " + game_timer + " seconds left"
 }
 
 function reset_game()

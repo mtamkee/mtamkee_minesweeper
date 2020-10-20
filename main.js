@@ -241,7 +241,6 @@ function flag(mine_sweeper, tile_location) {
     y_coordinate = Number(y_coordinate)
     mine_sweeper.mark(x_coordinate,y_coordinate);
     generate_Board(mine_sweeper);
-    
 }
 function splitString(tile_location){
     var split_string = tile_location.dataset.coordinate.split(",");

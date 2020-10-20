@@ -223,6 +223,25 @@ function finish_game(){
     }
 }
 
+function handle_click(mine_sweeper, tile_location){
+    let click_time = 0;
+    let drop_flag = false;
+    tile_location.ontouchstart = () => {
+        click_time = setTimeout(function(){
+            flag(mine_sweeper,tile_location);
+        }, 500);
+    };
+    tile_location.ontouchend = () => {
+        clearTimeout(click_time);
+        if(!drop_flag){
+            mine(mine_sweeper,tile_location);
+        drop_flag = false;
+        }
+    }; 
+    
+
+}
+
 
 function mine(mine_sweeper, tile_location) {
     let [x_coordinate,y_coordinate] = splitString(tile_location);
@@ -272,7 +291,18 @@ function countdown(mine_sweeper){
     document.querySelector(".countdown").innerHTML = "Time Till Detonation: " + game_timer
 }
 
-
+var device = false;
+function check_device(){
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    device = true;
+    console.log("on mobile");
+    }
+    else {
+    console.log("not on mobile");
+    device = false;
+    }
+}
+check_device();
 function generate_Board(mine_sweeper) {
     let game_status = mine_sweeper.getStatus();
     let mines_placed = game_status.nmines;
@@ -282,13 +312,16 @@ function generate_Board(mine_sweeper) {
     const game_board = mine_sweeper.getRendering();
     let flag_count = (mines_placed - mines_marked);
     let flags_placed = mines_marked
-
+    check_device();
     document.querySelector(".flags_remaining").innerHTML = "Flags Remaining: " + flag_count;
     document.querySelector(".flags_placed").innerHTML = "Flags Placed: " + flags_placed;
    //disable right click menu
    document.querySelectorAll(".playing_area").forEach(element => element.addEventListener("contextmenu", n => {
     n.preventDefault();
   }));
+  document.querySelectorAll(".playing_area td").forEach(element => element.addEventListener("contextmenu", n => {
+      n.rightClick(element);
+  }))
     
     //create a switch statement to chose a difficulty.
     let set_board = $(".base");
@@ -382,26 +415,35 @@ function generate_Board(mine_sweeper) {
             {
                 image.src = "./assets/numbers/zero.jpg";
             }
-            
+            image.className = "base_image";
+            tile_location.appendChild(image);
             var get_status = mine_sweeper.getStatus().done;
             if(!get_status){
+                if(device == false){
+                    console.log("mouse click")
                     tile_location.onmousedown = event => {
-                       var game_event = event.button;
-                       if(game_event == 0)
-                       {
-                           //mine square
-                           mine(mine_sweeper,tile_location);
-                           
-                       }
-                       else{
-                           //flag square
-                           flag(mine_sweeper,tile_location);
-                       }
-                    };
+                        var game_event = event.button;
+                        if(game_event == 0)
+                        {
+                            //mine square
+                            mine(mine_sweeper,tile_location);
+                            
+                        }
+                        else{
+                            //flag square
+                            flag(mine_sweeper,tile_location);
+                        }
+                     };
+                }
+                else {
+                    console.log("tap to mine or hold to flag")
+                    handle_click(mine_sweeper,tile_location);
+                }
+                    
                     
                 
             }
-            image.className = "base_image";
+            
             tile_location.appendChild(image);
             base_layout.appendChild(tile_location);
         }
@@ -459,5 +501,5 @@ function start_game(){
 
 }
 
-let mine_sweeper = new MSGame(); // call the game engine to be passed 
+let mine_sweeper = new MSGame(); // call the game engine 
 window.addEventListener('load', start_game);

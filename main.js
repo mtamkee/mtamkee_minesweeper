@@ -183,7 +183,6 @@ let MSGame = (function(){
 //////////////////////////////////////////////////////////////
 
 //initialize timers 
-
 let game_timer = 1000;
 let game_time = 0;
 
@@ -234,8 +233,6 @@ function handle_click(mine_sweeper, tile_location)
         console.log("mobile touch ended");
     }; 
     
-    
-
 }
 
 function activate_overlay (status, is_loser)
@@ -265,9 +262,6 @@ function mine(mine_sweeper, tile_location)
     y_coordinate = Number(y_coordinate)
     mine_sweeper.uncover(x_coordinate,y_coordinate);
     generate_Board(mine_sweeper);
-    
-    
-
 }
 
 function flag(mine_sweeper, tile_location)
@@ -497,7 +491,8 @@ function generate_Board(mine_sweeper)
                     
                 
             }
-            
+            image.className = "base_image";
+            tile_location.appendChild(image);
             base_layout.appendChild(tile_location);
         }
     }
@@ -512,7 +507,11 @@ function reset_clock()
     game_time = 0 //count up
     return game_time, game_timer;
 }
+function restart_game(){
+    reset_game();
+    reset_clock();
 
+}
 function initialize_board(button,mine_sweeper)
 {
     let [x_coordinate,y_coordinate,mine_count,flag_count] = split_incoming_data(button);
@@ -521,11 +520,7 @@ function initialize_board(button,mine_sweeper)
     mine_count = Number(mine_count);
     mine_sweeper.init(x_coordinate,y_coordinate,mine_count)
     generate_Board(mine_sweeper)
-    reset_game();
-    
-    
-    //reset clock
-    reset_clock();
+    restart_game();
 }
 
 

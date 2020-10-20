@@ -189,6 +189,7 @@ let game_timer = 1000;
 let game_time = 0;
 
 
+
 function end_game()
 {
     reset_clock();
@@ -208,28 +209,22 @@ function reset_game()
     document.querySelector("#overlay").classList.remove("active");
 }
 
-function finish_game(){
+function finish_game()
+{
     var get_status = mine_sweeper.getStatus().done;
     var is_loser = mine_sweeper.getStatus().exploded
-    if(get_status == true){
-        //if the mine_sweeper is won or lost
-        if(is_loser == false){
-            winner();
-        }
-        else{
-            loser();
-        }
-        end_game();
-    }
+    activate_overlay(get_status,is_loser);
 }
 
-function handle_click(mine_sweeper, tile_location){
+function handle_click(mine_sweeper, tile_location)
+{
     let click_time = 0;
     let drop_flag = false;
     tile_location.ontouchstart = () => {
         click_time = setTimeout(function(){
             flag(mine_sweeper,tile_location);
         }, 500);
+        console.log("mobile touch initiated");
     };
     tile_location.ontouchend = () => {
         clearTimeout(click_time);
@@ -237,13 +232,35 @@ function handle_click(mine_sweeper, tile_location){
             mine(mine_sweeper,tile_location);
         drop_flag = false;
         }
+        console.log("mobile touch ended");
     }; 
+    
     
 
 }
 
+function activate_overlay (status, is_loser)
+{
+    let lost = is_loser;
+    if(status == true)
+    {
+        if(lost == false)
+        {
+            winner();
+            end_game();
+        }
+        else
+        {
+            loser();
+            end_game();
+        }
+    }
+    
+        
+}
 
-function mine(mine_sweeper, tile_location) {
+function mine(mine_sweeper, tile_location)
+{
     let [x_coordinate,y_coordinate] = splitString(tile_location);
     x_coordinate = Number(x_coordinate)
     y_coordinate = Number(y_coordinate)
@@ -254,56 +271,92 @@ function mine(mine_sweeper, tile_location) {
 
 }
 
-function flag(mine_sweeper, tile_location) {
+function flag(mine_sweeper, tile_location)
+{
     let [x_coordinate,y_coordinate] = splitString(tile_location);
     x_coordinate = Number(x_coordinate)
     y_coordinate = Number(y_coordinate)
     mine_sweeper.mark(x_coordinate,y_coordinate);
     generate_Board(mine_sweeper);
 }
-function splitString(tile_location){
+function splitString(tile_location)
+{
     var split_string = tile_location.dataset.coordinate.split(",");
     let [x_coordinate,y_coordinate] = split_string;
     return [x_coordinate,y_coordinate];
 }
 
-function stopwatch(mine_sweeper){
+function stopwatch(mine_sweeper)
+{
     let status = mine_sweeper.getStatus();
     var start_explosion = status.nuncovered;
     var game_over = status.done;
-    if(start_explosion !== 0){
-        if (game_over == false){
+    if(start_explosion !== 0)
+    {
+        if (game_over == false)
+        {
             game_time = game_time + 1;
         }
     } 
     document.querySelector(".stopwatch").innerHTML = "Time in warzone: " + game_time
 }
 
-function countdown(mine_sweeper){
+function countdown(mine_sweeper)
+{
     let status = mine_sweeper.getStatus();
     var start_explosion = status.nuncovered;
     var game_over = status.done;
-    if(start_explosion !== 0){
-        if (game_over == false){
+    if(start_explosion !== 0)
+    {
+        if (game_over == false)
+        {
             game_timer = game_timer -1;
         }
     } 
     document.querySelector(".countdown").innerHTML = "Time Till Detonation: " + game_timer
 }
 
+var previous_state = false;
 var device = false;
 function check_device(){
-    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    device = true;
-    console.log("on mobile");
+    if(navigator.userAgent.match(/Android/i))
+    {
+        device = true;
+        console.log("on andriod");
     }
-    else {
-    console.log("not on mobile");
-    device = false;
+    else if(navigator.userAgent.match(/iPhone/i))
+    {
+        device = true;
+        console.log("on iphone");
+    }
+    else if(navigator.userAgent.match(/iPad/i))
+    {
+        device = true;
+        console.log("on ipad");
+    }
+    else if(navigator.userAgent.match(/webOS/i))
+    {
+        device = true;
+        console.log("on webOS");
+    }
+    else if(navigator.userAgent.match(/IEMobile/i))
+    {
+        device = true;
+        console.log("on mobile");
+    }
+    else 
+    {
+        device = false;
+        console.log("on pc");
     }
 }
+function timedRefresh(timeoutPeriod)
+{
+	setTimeout("location.reload(true);",timeoutPeriod);
+}
 check_device();
-function generate_Board(mine_sweeper) {
+function generate_Board(mine_sweeper)
+{
     let game_status = mine_sweeper.getStatus();
     let mines_placed = game_status.nmines;
     let mines_marked = game_status.nmarked
@@ -319,9 +372,6 @@ function generate_Board(mine_sweeper) {
    document.querySelectorAll(".playing_area").forEach(element => element.addEventListener("contextmenu", n => {
     n.preventDefault();
   }));
-  document.querySelectorAll(".playing_area td").forEach(element => element.addEventListener("contextmenu", n => {
-      n.rightClick(element);
-  }))
     
     //create a switch statement to chose a difficulty.
     let set_board = $(".base");
@@ -329,7 +379,8 @@ function generate_Board(mine_sweeper) {
     var intermediate = "Intermediate";
     var beginner = "Beginner";
     let board_size = game_board.length;
-    switch(board_size) {
+    switch(board_size) 
+    {
         case 10:
             set_board.removeClass(expert);
             set_board.removeClass(intermediate);
@@ -351,9 +402,11 @@ function generate_Board(mine_sweeper) {
     let row_counter = 0;
     let column_counter = 0;
     let board_length = game_board.length;
-    for(row_counter = 0 ; row_counter < board_length ; row_counter = row_counter + 1) {
+    for(row_counter = 0 ; row_counter < board_length ; row_counter = row_counter + 1)
+    {
         var rows_in_board = game_board[row_counter].length;
-        for(column_counter = 0; column_counter < rows_in_board; column_counter = column_counter + 1){
+        for(column_counter = 0; column_counter < rows_in_board; column_counter = column_counter + 1)
+        {
             let field_location = game_board[row_counter][column_counter];
             let image = document.createElement('img');
             let tile_location = document.createElement('div');
@@ -365,7 +418,7 @@ function generate_Board(mine_sweeper) {
             
             if (field_location == "H")
             {
-                image.src = "./assets/field/building1.jpg";
+                image.src = "./assets/field/building.jpg";
             }
             else if(field_location == "F")
             {
@@ -377,7 +430,7 @@ function generate_Board(mine_sweeper) {
             }
             else if(field_location == '1')
             {
-                image.src = "./assets/numbers/one.png";
+                image.src = "./assets/numbers/one.jpg";
             }
             else if(field_location == '2')
             {
@@ -413,7 +466,7 @@ function generate_Board(mine_sweeper) {
             }
             else if(field_location == '0')
             {
-                image.src = "./assets/numbers/zero.jpg";
+                image.src = "./assets/numbers/zero1.jpg";
             }
             image.className = "base_image";
             tile_location.appendChild(image);
@@ -429,13 +482,15 @@ function generate_Board(mine_sweeper) {
                             mine(mine_sweeper,tile_location);
                             
                         }
-                        else{
+                        else
+                        {
                             //flag square
                             flag(mine_sweeper,tile_location);
                         }
                      };
                 }
-                else {
+                else 
+                {
                     console.log("tap to mine or hold to flag")
                     handle_click(mine_sweeper,tile_location);
                 }
@@ -453,13 +508,15 @@ function generate_Board(mine_sweeper) {
 }
 
 
-function reset_clock(){
+function reset_clock()
+{
     game_timer = 1000; // count down
     game_time = 0 //count up
     return game_time, game_timer;
 }
 
-function createBoardFromButton(button,mine_sweeper){
+function createBoardFromButton(button,mine_sweeper)
+{
     let [x_coordinate,y_coordinate,mine_count,flag_count] = split_incoming_data(button);
     x_coordinate = Number(x_coordinate); 
     y_coordinate = Number(y_coordinate);
@@ -471,7 +528,7 @@ function createBoardFromButton(button,mine_sweeper){
     
     //reset clock
     reset_clock();
-  }
+}
 
 
   /*
@@ -486,7 +543,8 @@ function split_incoming_data(button)
 }
 
 
-function start_game(){
+function start_game()
+{
 
     
     // register callbacks for buttons

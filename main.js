@@ -181,7 +181,6 @@ let MSGame = (function(){
 
 })();
 //////////////////////////////////////////////////////////////
-let flagged = false;
 
 //initialize timers 
 
@@ -266,7 +265,7 @@ function mine(mine_sweeper, tile_location)
     y_coordinate = Number(y_coordinate)
     mine_sweeper.uncover(x_coordinate,y_coordinate);
     generate_Board(mine_sweeper);
-    flagged = false;
+    
     
 
 }
@@ -468,10 +467,9 @@ function generate_Board(mine_sweeper)
             {
                 image.src = "./assets/numbers/zero1.jpg";
             }
-            image.className = "base_image";
-            tile_location.appendChild(image);
+            
             var get_status = mine_sweeper.getStatus().done;
-            if(!get_status){
+            if(get_status == false){
                 if(device == false){
                     console.log("mouse click")
                     tile_location.onmousedown = event => {
@@ -489,7 +487,7 @@ function generate_Board(mine_sweeper)
                         }
                      };
                 }
-                else 
+                else if (device == true)
                 {
                     console.log("tap to mine or hold to flag")
                     handle_click(mine_sweeper,tile_location);
@@ -498,7 +496,7 @@ function generate_Board(mine_sweeper)
                     
                 
             }
-            
+            image.className = "base_image";
             tile_location.appendChild(image);
             base_layout.appendChild(tile_location);
         }
@@ -515,7 +513,7 @@ function reset_clock()
     return game_time, game_timer;
 }
 
-function createBoardFromButton(button,mine_sweeper)
+function initialize_board(button,mine_sweeper)
 {
     let [x_coordinate,y_coordinate,mine_count,flag_count] = split_incoming_data(button);
     x_coordinate = Number(x_coordinate); 
@@ -542,6 +540,10 @@ function split_incoming_data(button)
     return [x_coordinate,y_coordinate,mine_count,flag_count];
 }
 
+function set_timings(mine_sweeper){
+    window.setInterval(x => stopwatch(mine_sweeper),1000);
+    window.setInterval(x => countdown(mine_sweeper),1000);
+}
 
 function start_game()
 {
@@ -550,14 +552,14 @@ function start_game()
     // register callbacks for buttons
     document.querySelectorAll(".difficulty_select").forEach((button) =>{
     button.addEventListener("click",function(){
-      createBoardFromButton(button,mine_sweeper)
+      initialize_board(button,mine_sweeper)
         })
     });
     generate_Board(mine_sweeper);
-    window.setInterval(x => stopwatch(mine_sweeper),1000);
-    window.setInterval(x => countdown(mine_sweeper),1000);
+    set_timings(mine_sweeper);
 
 }
+
 
 let mine_sweeper = new MSGame(); // call the game engine 
 window.addEventListener('load', start_game);

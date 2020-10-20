@@ -48,18 +48,18 @@ body {
 
 .Beginner {
     display: grid;
-    grid-template-columns: repeat(10, .75fr);
-    width: calc(70vh);
+    grid-template-columns: repeat(10, .40fr);
+    width: calc(60vh);
 }
 .Intermediate {
     display: grid;
     grid-template-columns: repeat(15, .75fr);
-    width: calc(90vh);
+    width: calc(65vh);
 }
 .Expert {
     display: grid;
     grid-template-columns: repeat(20, .75fr);
-    width: calc(90vh);
+    width: calc(65vh);
 }
 
 .playing_area {
@@ -125,20 +125,21 @@ body {
   }
   
   #overlay {
+    margin-top: 1em;
     visibility: hidden;
-    padding: 1em;
-    padding-left: 4em;
-    padding-right: 4em;
+    padding: 0.5em;
+    padding-left: 2em;
+    padding-right: 2em;
     background-color: red;
     border-radius: 5px;
     display: flex;
-    justify-content: right;
+    justify-content:  center;
     align-items: center;
     flex-direction: column;
     color: rgb(255, 255, 255);
     box-shadow: 0 0 20px black;
-    right: 0;
-    position: absolute;
+    
+    position: relative;
   }
   
   #overlayin p {

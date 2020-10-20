@@ -467,7 +467,8 @@ function generate_Board(mine_sweeper)
             {
                 image.src = "./assets/numbers/zero1.jpg";
             }
-            
+            image.className = "base_image";
+            tile_location.appendChild(image);
             var get_status = mine_sweeper.getStatus().done;
             if(get_status == false){
                 if(device == false){
@@ -496,8 +497,7 @@ function generate_Board(mine_sweeper)
                     
                 
             }
-            image.className = "base_image";
-            tile_location.appendChild(image);
+            
             base_layout.appendChild(tile_location);
         }
     }

@@ -33,11 +33,9 @@ body {
 .left{
     width: 40%;
 }
-.right {
-    width: 40%
-}
+
 .middle {
-    width: 100%;
+    width: 90%;
 }
 .row:after{
     content: "";

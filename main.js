@@ -399,7 +399,7 @@ function tile_generator(field_location,tile){
             }
             else if(field_location == '6')
             {
-                tile.src = "./assets/numbers/images.jpg";
+                tile.src = "./assets/numbers/six.jpg";
             }
             else if(field_location == '7')
             {

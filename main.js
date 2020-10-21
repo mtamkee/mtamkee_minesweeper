@@ -343,10 +343,6 @@ function check_device(){
         console.log("on pc");
     }
 }
-function timedRefresh(timeoutPeriod)
-{
-	setTimeout("location.reload(true);",timeoutPeriod);
-}
 check_device();
 
 function get_nmines(game_status){

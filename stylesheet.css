@@ -31,11 +31,11 @@ body {
     padding: 10px;
 }
 .left{
-    width: 40%;
+    width: 50%;
 }
 
 .middle {
-    width: 90%;
+    width: 100%;
 }
 .row:after{
     content: "";
@@ -119,7 +119,7 @@ body {
   
   #overlay.active {
     visibility: visible;
-    width: 80%;
+    width: 100%;
   }
   
   #overlay {
@@ -137,7 +137,7 @@ body {
     color: rgb(255, 255, 255);
     box-shadow: 0 0 30px black;
     position: relative;
-    width: 80%;
+    width: 100%;
   }
   
   #overlayin p {

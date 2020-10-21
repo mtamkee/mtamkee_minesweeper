@@ -306,7 +306,7 @@ function countdown(mine_sweeper)
             game_timer = game_timer -1;
         }
     } 
-    document.querySelector(".countdown").innerHTML = "Time Till Detonation: " + game_timer
+    document.querySelector(".countdown").innerHTML = "Detonation In : " + game_timer
 }
 
 var previous_state = false;

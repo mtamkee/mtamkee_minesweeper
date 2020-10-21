@@ -119,6 +119,7 @@ body {
   
   #overlay.active {
     visibility: visible;
+    width: 80%;
   }
   
   #overlay {
@@ -136,6 +137,7 @@ body {
     color: rgb(255, 255, 255);
     box-shadow: 0 0 30px black;
     position: relative;
+    width: 80%;
   }
   
   #overlayin p {
